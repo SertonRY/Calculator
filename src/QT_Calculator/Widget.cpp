@@ -4,8 +4,6 @@
 #include <QStack>
 #include <QKeyEvent>
 #include <QVector>
-#include <QDebug>
-
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
@@ -83,12 +81,10 @@ Widget::Widget(QWidget *parent) :
     //connect signals and slots with check and process
     connect(ui->Button_euqal, &QPushButton::clicked, this, &Widget::processSlot);
 }
-
 Widget::~Widget()
 {
     delete ui;
 }
-
 void Widget::processSlot()
 {
     if(ui->Text_main->displayText().compare("") != 0)
@@ -118,7 +114,6 @@ void Widget::processSlot()
         return;
     }
 }
-
 void Widget::keyPressEvent(QKeyEvent *event)
 {
     switch(event->key())
@@ -137,8 +132,6 @@ void Widget::keyPressEvent(QKeyEvent *event)
             break;
     }
 }
-
-
 void Widget::upList()
 {
     if(historyArray.isEmpty())
@@ -166,7 +159,6 @@ void Widget::upList()
         }
     }
 }
-
 void Widget::downList()
 {
     if(historyArray.isEmpty())
@@ -193,12 +185,9 @@ void Widget::downList()
         }
     }
 }
-
 QVector<QString> historyArray;
 QString currentText;
 int historyPointer;
-
-
 //display with add
 void Widget::addToMainText(QString addText)
 {
@@ -206,18 +195,15 @@ void Widget::addToMainText(QString addText)
     tempText = ui->Text_main->displayText() + addText;
     ui->Text_main->setText(tempText);
 }
-
 //display with delete
 void Widget::clearMainText()
 {
     ui->Text_main->clear();
 }
-
 void Widget::backspaceMainText()
 {
     ui->Text_main->backspace();
 }
-
 //check the formula with a mark on extern flag
 int syntaxErrorFlag = 0;
 QString Widget::checkMainText()
@@ -287,7 +273,6 @@ QString Widget::checkMainText()
         tempText.replace(tempText.indexOf("÷"), 1, "/");
     }
     ui->Bar_progress->setValue(40);
-
     //2nd auto convert constant symbols
     while(tempText.indexOf("pi", 0, Qt::CaseInsensitive) != -1)
     {
@@ -300,7 +285,6 @@ QString Widget::checkMainText()
         ui->Label_status->setText("Auto converting");
         tempText.replace(tempText.indexOf("e", 0, Qt::CaseInsensitive), 1, "2.71828");
     }
-
     //3rd limit all characters are selected
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(48);
@@ -332,7 +316,6 @@ QString Widget::checkMainText()
         ++data_1;
     }
     ui->Bar_progress->setValue(52);
-
     //4th missing bracket detection
     QStack <int> leftBracketStorage;
     QChar *data_3 = tempText.data();
@@ -369,7 +352,6 @@ QString Widget::checkMainText()
         }
     }
     ui->Bar_progress->setValue(56);
-
     //5th continus operators delete
     int catchOperator = 0;
     int tempDeletePosition = 0;
@@ -400,7 +382,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(60);
-
     //6th negtive number auto fix
     QChar *data_5 = tempText.data();
     if(!data_5->isNull())
@@ -475,8 +456,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(64);
-
-
     //7th multiple dots auto fix
     int catchDot = 0;//0->out of range | -1->active for delete | 1->active in range
     int tempRemovePosition = 0;
@@ -513,8 +492,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(68);
-
-
     //8th dot abbreviate(before and after) auto fix
     QChar *data_7 = tempText.data();
     int tempDotRemovePosition = 0;
@@ -571,7 +548,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(72);
-
     //9th empty brackets delete
     QStack <int> leftBracketStack;
     QStack <int> statusBetweenBracketsStack;
@@ -622,8 +598,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(76);
-
-
     //10th missing operand detection
     QChar *data_9 = tempText.data();
     while(!data_9->isNull())
@@ -643,7 +617,6 @@ QString Widget::checkMainText()
                 return tempText;
             }
             ++data_9;
-
             ++data_9;
             checkCode = data_9->unicode();
             if(!(checkCode >= 48 && checkCode <= 57) && checkCode != 40)
@@ -660,7 +633,6 @@ QString Widget::checkMainText()
     }
     ui->Label_status->setText("Checking");
     ui->Bar_progress->setValue(80);
-
     //11th missing operator detection like "5(10)"
     QChar *data_10 = tempText.data();
     int tempInsertPosition = 0;
@@ -715,8 +687,6 @@ QString Widget::checkMainText()
     }
     ui->Bar_progress->setValue(84);
     ui->Label_status->setText("Checking");
-
-
     //12th change empty status to zero like "" --> "0"
     QChar *data_11 = tempText.data();
     if(data_11->isNull())
@@ -727,14 +697,12 @@ QString Widget::checkMainText()
     ui->Label_status->setText("Checking");
     return tempText;
 }
-
 int priorityTable[6][8] = {1, 1, 0, 0, 0, 0, 1, 1,
                            1, 1, 0, 0, 0, 0, 1, 1,
                            1, 1, 1, 1, 0, 0, 1, 1,
                            1, 1, 1, 1, 0, 0, 1, 1,
                            1, 1, 1, 1, 0, 0, 1, 1,
                            0, 0, 0, 0, 0, 0, -1, -2};
-
 bool Widget::judgePriority(QString operatorOld, QString operatorNew)
 {
     int operatorOldNumber = judgePriorityNumber(operatorOld);
@@ -796,12 +764,10 @@ int Widget::judgePriorityNumber(QString tempOperator)
     }
     return -1;
 }
-
 void Widget::displayFormula(QString tempText)
 {
     ui->Label_history->setText(tempText);
 }
-
 //calculate the formula
 void Widget::processFormula(QString tempText)
 {

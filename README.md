@@ -6,7 +6,7 @@ Windows application with basic calculate functions.
 
 Written by Qt Creator in C++ language.
 
-The detail of this whole project can be seen on [CSDN](https://blog.csdn.net/weixin_42588702) website.
+The detail of this whole project can be seen on [CSDN](https://blog.csdn.net/weixin_42588702/article/details/110870970) website.
 
 The source code is in src directory, you can simply open the whole directory by Qt Creator.
 
@@ -30,7 +30,7 @@ This repository relies on the following tutorials:
 
 [How to change the icon of Qt application](https://jingyan.baidu.com/article/8cdccae9577d0e315413cd88.html)
 
-[How to release a Qt application](https://blog.csdn.net/weixin_43935474/article/details/93137932)
+[How to release a Qt application](https://blog.csdn.net/lxj434368832/article/details/80814388)
 
 Also, I appreciate the teacher who gives me a hand and my friends who did some testing work.
 
